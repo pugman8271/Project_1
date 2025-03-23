@@ -1,14 +1,10 @@
 import datetime
-import json
 import os
 from datetime import datetime
-
 import currencyapicom
 import requests
 from black.trans import defaultdict
 from dotenv import load_dotenv
-
-import src.utils
 from src import utils
 from src.utils import get_card_number, search_func
 
@@ -182,4 +178,3 @@ def account_deposits(operations_list, category_list):
     dict_to_return["main"] = list_to_format
 
     return dict_to_return
-

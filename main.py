@@ -59,6 +59,7 @@ def main_events():
     with open("data/json_info_events.json", "w", encoding="utf-8") as file:
         json.dump(json_events_w, file, ensure_ascii=False)
 
+
 #
 main_page()
 main_events()

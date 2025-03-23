@@ -1,18 +1,10 @@
 import json
-import unittest
 from unittest.mock import patch
-
 import pandas as pd
 import pytest
 
-from src.utils import (
-    filter_by_data,
-    get_card_number,
-    get_category,
-    open_json,
-    open_xlsx,
-    search_func,
-)
+from src.utils import (filter_by_data, get_card_number, get_category,
+                       open_json, open_xlsx, search_func)
 
 
 # тесты open_json
