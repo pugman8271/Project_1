@@ -26,11 +26,11 @@ def user_greeting():
     time_user = datetime.now().hour
     if 5 <= time_user < 12:
         greeting_user = "Доброе утро"
-    if 12 <= time_user < 16:
+    elif 12 <= time_user < 16:
         greeting_user = "Добрый день"
-    if 16 <= time_user < 23:
+    elif 16 <= time_user < 23:
         greeting_user = "Добрый вечер"
-    if 23 <= time_user < 5:
+    else:
         greeting_user = "Доброй ночи"
 
     return greeting_user
@@ -112,7 +112,7 @@ def currency_stock_price(user_setting):
         api_url = "https://api.api-ninjas.com/v1/stockprice?ticker={}".format(symbol)
         response = requests.get(api_url, headers={"X-Api-Key": API_KEY_apilayer_2})
         if response.status_code == requests.codes.ok:
-            text_to_dict = json.loads(response.text)
+            text_to_dict = response.json()  # Изменено на response.json()
             stock_info.append(
                 {"stock": text_to_dict["name"], "price": text_to_dict["price"]}
             )
