@@ -8,6 +8,7 @@ import requests
 from black.trans import defaultdict
 from dotenv import load_dotenv
 
+import src.utils
 from src import utils
 from src.utils import get_card_number, search_func
 
@@ -120,28 +121,6 @@ def currency_stock_price(user_setting):
     return stock_info
 
 
-# print(card_total_expenses_cashback(card_number(operations_list) , operations_list))
-# print(operations_list)
-# operation_ex = {'Дата операции': '01.01.2018 12:49:53',
-#                 'Дата платежа': '01.01.2018',
-#                 'Номер карты': nan,
-#                 'Статус': 'OK',
-#                 'Сумма операции': -3000.0,
-#                 'Валюта операции': 'RUB',
-#                 'Сумма платежа': -3000.0,
-#                 'Валюта платежа': 'RUB',
-#                 'Кэшбэк': nan,
-#                 'Категория': 'Переводы',
-#                 'MCC': nan,
-#                 'Описание': 'Линзомат ТЦ Юность',
-#                 'Бонусы (включая кэшбэк)': 0,
-#                 'Округление на инвесткопилку': 0,
-#                 'Сумма операции с округлением': 3000.0}
-# print(top_5_expenses(operations_list))
-# print(currency_rate(setting_info))
-# print(currency_stock_price(setting_info))
-
-
 def account_expenses(operations_list, category_list):
     expenses_dict = defaultdict(int)
     for operation in operations_list:
@@ -204,11 +183,3 @@ def account_deposits(operations_list, category_list):
 
     return dict_to_return
 
-
-# print(card_number(operations_list))
-#
-# operations_list=open_xlsx('../data/operations.xlsx')
-# category_list = get_category(operations_list)
-#
-# print(currency_rate(setting_info))
-# print(account_deposits(operations_list,category_list))

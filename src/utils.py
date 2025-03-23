@@ -33,17 +33,17 @@ def get_card_number(operations_list):
 
 
 def search_func(operations_list, category, keyword=""):
-    """Универсальная функция для фильтарации данных по значениям: category/keyword"""
+    """Универсальная функция для фильтрации данных по значениям: category/keyword"""
     searched_info = []
-    pattern = re.compile(keyword.lower())
+    pattern = re.compile(re.escape(keyword.lower()))  # Экранирование специального символа
+
     for operation in operations_list:
-        try:
-            if category in operation and re.search(
-                pattern, operation[category].lower()
-            ):
+        # Проверяем наличие категории и соответствие ключевому слову
+        if category in operation:
+            value = operation[category]
+            if isinstance(value, str) and re.search(pattern, value.lower()):
                 searched_info.append(operation)
-        except Exception:
-            searched_info = searched_info
+
     return searched_info
 
 
