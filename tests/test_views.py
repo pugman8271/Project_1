@@ -1,9 +1,18 @@
 from datetime import datetime
 from unittest.mock import Mock, patch
+
 import pytest
-from src.views import (account_deposits, account_expenses, card_number,
-                       card_total_expenses_cashback, currency_rate,
-                       currency_stock_price, top_5_expenses, user_greeting)
+
+from src.views import (
+    account_deposits,
+    account_expenses,
+    card_number,
+    card_total_expenses_cashback,
+    currency_rate,
+    currency_stock_price,
+    top_5_expenses,
+    user_greeting,
+)
 
 
 # тесты user_greeting

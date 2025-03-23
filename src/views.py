@@ -1,12 +1,22 @@
 import datetime
+import logging
 import os
 from datetime import datetime
+
 import currencyapicom
 import requests
 from black.trans import defaultdict
 from dotenv import load_dotenv
+
 from src import utils
 from src.utils import get_card_number, search_func
+
+logger = logging.getLogger("views")
+logger.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler("logs/views.log", "w", encoding="utf-8")
+file_formater = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s")
+file_handler.setFormatter(file_formater)
+logger.addHandler(file_handler)
 
 load_dotenv("src/.env")
 
@@ -28,7 +38,7 @@ def user_greeting():
         greeting_user = "Добрый вечер"
     else:
         greeting_user = "Доброй ночи"
-
+    logger.info("Успешно выведено приветствие, учитывающее текущее время суток")
     return greeting_user
 
 
@@ -39,6 +49,7 @@ def card_number(operations_list):
     cards_list = []
     for card in cards:
         cards_list.append(card[1:])
+    logger.info("Получен отформатированный список уникальных карт")
     return cards_list
 
 
@@ -62,7 +73,9 @@ def card_total_expenses_cashback(card_list, operations_list):
                     (float(operation.get("Бонусы (включая кэшбэк)"))), 2
                 )
         total_expenses_cashback.append(card_dict)
-
+    logger.info(
+        "Получена информация по тратам и пополнениям каждой карты из списка операций"
+    )
     return total_expenses_cashback
 
 
@@ -81,6 +94,7 @@ def top_5_expenses(operations_list):
             "description": operation.get("Описание"),
         }
         result.append(filtered_info)
+    logger.info("Получен список топ-5 операций по сумме платежа")
     return result
 
 
@@ -91,12 +105,14 @@ def currency_rate(user_setting):
             user_setting["user_currencies"][0], [user_setting["user_currencies"][1]]
         )
     except Exception:
+        logger.error("Информация о курсе валют не получена")
         return "Что-то пошло не так"
     result_dict = {}
     rate = round((result_1["data"][user_setting["user_currencies"][1]]["value"]), 2)
     currency = user_setting["user_currencies"][0]
     result_dict["currency"] = currency
     result_dict["rate"] = rate
+    logger.info("Получена информация о курсе валют")
     return [result_dict]
 
 
@@ -108,11 +124,16 @@ def currency_stock_price(user_setting):
         api_url = "https://api.api-ninjas.com/v1/stockprice?ticker={}".format(symbol)
         response = requests.get(api_url, headers={"X-Api-Key": API_KEY_apilayer_2})
         if response.status_code == requests.codes.ok:
+            logger.info("Получена информация о курсе акций")
             text_to_dict = response.json()  # Изменено на response.json()
             stock_info.append(
                 {"stock": text_to_dict["name"], "price": text_to_dict["price"]}
             )
         else:
+            logger.error(
+                f"Информация о курсе акций не получена, ошибка: {response.status_code}"
+                f"текст ошибки: {response.text}"
+            )
             stock_info = f"Error:, {response.status_code}, {response.text}"
     return stock_info
 
@@ -145,7 +166,7 @@ def account_expenses(operations_list, category_list):
     dict_to_return = {}
     dict_to_return["total_amount"] = round(total_expenses)
     dict_to_return["main"] = list_to_format
-
+    logger.info("Получена информация о тратах по картам")
     return dict_to_return
 
 
@@ -176,5 +197,5 @@ def account_deposits(operations_list, category_list):
     dict_to_return = {}
     dict_to_return["total_amount"] = round(total_deposits)
     dict_to_return["main"] = list_to_format
-
+    logger.info("Получена информация о пополнениях по картам")
     return dict_to_return
